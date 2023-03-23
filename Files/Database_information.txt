@@ -1,0 +1,9 @@
+# Bases de datos existentes
+Bases de datos sugeridas:
+ Hand Gesture Recognition Database
+ Acquired by Leap Motion
+ https://www.kaggle.com/datasets/gti-upm/leapgestrecog
+
+ *Database for hand gesture recognition*
+ created by Michal Kawulok
+ https://sun.aei.polsl.pl/~mkawulok/gestures/
