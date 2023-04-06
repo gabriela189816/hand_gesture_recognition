@@ -59,15 +59,15 @@ e, v = np.linalg.eig(L)
 # eigvec = np.sort(v)[::-1]
 # print(eigval)
 
-u = np.zeros((m,40000), dtype=np.uint8)
+U = np.zeros((m,40000), dtype=np.uint8)
 for l in range(m):
     for k in range(m):
-        u[l,:] = u[l,:] + v[1,k]*A[k,:]         # eigenvectors u_l
+        U[l,:] = U[l,:] + v[l,k]*A[k,:]         # eigenvectors u_l
 
-eigen_face = np.array(u[0,:]).reshape((200,200))
+eigen_face = np.array(U[4,:]).reshape((200,200))
 print(eigen_face)
-cv.imshow('Eigenface 1', eigen_face)
-cv.imwrite('Eigenface 1.png',eigen_face)
+cv.imshow('Eigenface 5', eigen_face)
+cv.imwrite('Eigenface 5.png',eigen_face)
 
 cv.waitKey(0)
 cv.destroyAllWindows()
