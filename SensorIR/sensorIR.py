@@ -40,9 +40,7 @@ depth_stream.set_video_mode(c_api.OniVideoMode(pixelFormat=c_api.OniPixelFormat.
 # ----------------------------------------Start the stream -----------------------------------------------------
 depth_stream.start()
 ir_stream.start() 
-
-# ir_frame = ir_stream.read_frame()                # old version
-# ir_frame_data = frame.get_buffer_as_uint16()     # old version
+print ("Started!") 
 
 def get_ir():
     """
@@ -59,44 +57,27 @@ def get_ir():
     return ir_frame, ir4d
 
 ## main loop
-s=0
-#frame_idx = 0
+frame_idx = 0
 done = False
 while not done:
 
     key = cv.waitKey(1)
-    key = cv.waitKey(1) & 255
 
     if (key&255) == 27:
         print ("\tESC key detected!")
         done = True
-    elif chr(key) =='s': #screen capture
-        print ("\t Saving image")
-        cv.imwrite('Frame.png', ir4d)
-        done = True
-
     # Infrared method
     _, ir4d = get_ir()
     cv.imshow("IR image", ir4d)
-    #frame_idx+=1
+    frame_idx+=1
 # end while
 
-#cv.imwrite('frame01.png', ir4d)
+cv.imwrite('frame.png', ir4d)
+print ("\tSaving frame")
 
 ## Release resources and terminate
 cv.destroyAllWindows()
 depth_stream.stop()
 openni2.unload()
-print ("Terminated") 
+print ("Terminated!") 
 # --------- Finish the stream -------------------------------------------------------
-
-
-
-#ir_stream.stop()                                               # old version
-# img = np.array(frame_data).reshape((240,320)) #unit16         # old version
-# #img = np.array(frame_data).reshape((300,512))  #unit8        # old version
-# print(img.shape)                                              # old version
-# print(np.shape(frame_data))                                   # old version
-# plt.imshow(img)                                               # old version
-# plt.show()                                                    # old version
-# openni2.unload()                                              # old version
