@@ -4,7 +4,7 @@ Created on Mon Apr 03 21:15:00 2023
 
 @author: Gabriela Hilario Acuapan & Luis Alberto Pineda Gómez
 File: PCA_example01.py
-Comments: 
+Comments: Using row vectors
 """
 import cv2 as cv
 import numpy as np
@@ -34,8 +34,8 @@ for i in range(m):
 # ------------- STEP 3. AVERAGE FACE ----------------
 average = np.mean(M, 0)      # average of each colum of M
 average_face = np.array(average, dtype=np.uint8).reshape((200,200))
-cv.imwrite('average_face.png',average_face)
-cv.imshow('Average face', average_face)
+# cv.imwrite('average_face.png',average_face)
+# cv.imshow('Average face', average_face)
 # cv.waitKey(0)
 # cv.destroyAllWindows()
 
@@ -54,6 +54,8 @@ L = np.dot(A,np.transpose(A))
 
 # STEP 6. EIGENVALUE DECOMPOSITION ON MATRIX L = AA'
 e, v = np.linalg.eig(L)
+print(np.amax(e))
+print(np.amin(e))
 
 # eigval = np.sort(e)[::-1]
 # eigvec = np.sort(v)[::-1]
@@ -62,12 +64,21 @@ e, v = np.linalg.eig(L)
 U = np.zeros((m,40000), dtype=np.uint8)
 for l in range(m):
     for k in range(m):
-        U[l,:] = U[l,:] + v[l,k]*A[k,:]         # eigenvectors u_l
+        U[l,:] = U[l,:] + v[l,k]*A[k,:]         # eigenvectors u_l (eigenfaces)
 
 eigen_face = np.array(U[4,:]).reshape((200,200))
-print(eigen_face)
-cv.imshow('Eigenface 5', eigen_face)
-cv.imwrite('Eigenface 5.png',eigen_face)
+#print(eigen_face)
+# cv.imshow('Eigenface 5', eigen_face)
+# cv.imwrite('Eigenface 5.png',eigen_face)
 
-cv.waitKey(0)
-cv.destroyAllWindows()
+#cv.waitKey(0)
+#cv.destroyAllWindows()
+
+m2 = 30             # M'
+# ------------------ STEP 7. WEIGHTS ------------------------------
+Palm = cv.imread('Frames_Palm_Gesture/frame_0' + str(i) + '.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
+New_image = Palm.flatten()
+W = np.zeros((1,m2), dtype=np.uint8)
+for k in range(m2):
+    W[0,k] = np.dot(U[k,:],(New_image - average))
+print(W)
