@@ -76,9 +76,43 @@ eigen_face = np.array(U[4,:]).reshape((200,200))
 
 m2 = 30             # M'
 # ------------------ STEP 7. WEIGHTS ------------------------------
-Palm = cv.imread('Frames_Palm_Gesture/frame_0' + str(i) + '.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
-New_image = Palm.flatten()
-W = np.zeros((1,m2), dtype=np.uint8)
+
+## classes
+Palm = cv.imread('Frames_Palm_Gesture/frame_00.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
+New_imag1 = Palm.flatten()
+W1 = np.zeros((1,m2), dtype=np.uint8)
 for k in range(m2):
-    W[0,k] = np.dot(U[k,:],(New_image - average))
-print(W)
+    W1[0,k] = np.dot(U[k,:],(New_imag1 - average))
+print(W1)
+
+LetterC = cv.imread('NEW_processed_images/P0_processed/p0_c0.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
+New_imag2 = LetterC.flatten()
+W2 = np.zeros((1,m2), dtype=np.uint8)
+for k in range(m2):
+    W2[0,k] = np.dot(U[k,:],(New_imag2 - average))
+#print(W2)
+
+Fist = cv.imread('NEW_processed_images/P0_processed/p0_fist0.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
+New_imag3 = Fist.flatten()
+W3 = np.zeros((1,m2), dtype=np.uint8)
+for k in range(m2):
+    W3[0,k] = np.dot(U[k,:],(New_imag3 - average))
+#print(W3)
+
+Index = cv.imread('NEW_processed_images/P0_processed/p0_index0.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
+New_imag4 = Fist.flatten()
+W4 = np.zeros((1,m2), dtype=np.uint8)
+for k in range(m2):
+    W4[0,k] = np.dot(U[k,:],(New_imag4 - average))
+#print(W4)
+
+# Euclidian distance
+Input_image = cv.imread('NEW_processed_images/P0_processed/p0_index0.png', cv.IMREAD_GRAYSCALE)
+input = Input_image.flatten()
+O = np.zeros((1,m2), dtype=np.uint8)
+for k in range(m2):
+    O[0,k] = np.dot(U[k,:],(input - average))
+print(O)
+
+dist = (np.linalg.norm(O-W1))**2
+print(dist)
