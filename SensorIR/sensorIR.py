@@ -72,7 +72,7 @@ while not done:
     frame_idx+=1
 # end while
 
-cv.imwrite('frame.png', ir4d)
+cv.imwrite('Gesture1_frame3.png', ir4d)
 print ("\tSaving frame")
 
 ## Release resources and terminate
