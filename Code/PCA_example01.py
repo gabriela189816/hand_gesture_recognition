@@ -4,7 +4,7 @@ Created on Mon Apr 03 21:15:00 2023
 
 @author: Gabriela Hilario Acuapan & Luis Alberto Pineda Gómez
 File: PCA_example01.py
-Comments: Using row vectors
+Comments: Using row vectors, with Frames_Palm_Gesture data set
 """
 import cv2 as cv
 import numpy as np
