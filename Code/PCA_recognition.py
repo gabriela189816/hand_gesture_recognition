@@ -62,17 +62,94 @@ e, v = np.linalg.eig(L)
 #print(e)
 # print(np.amin(e))
 
-U = np.zeros((gestures*images,40000), dtype=np.uint8)
-for l in range(gestures*images):
-    for k in range(gestures*images):
+M2 = 40     # M'
+U = np.zeros((M2,40000), dtype=np.uint8)
+for l in range(M2):
+    for k in range(M2):
         U[l,:] = U[l,:] + v[l,k]*A[k,:]         # eigenvectors u_l (eigenfaces)
 
-M2 = 10     # M'
-for h in range(M2):
-    eigen_hand = np.array(U[h,:]).reshape((200,200))
+# plot eigenhands
+#for h in range(M2):
+    #eigen_hand = np.array(U[h,:]).reshape((200,200))
     #cv.imshow('Eigenface 1', eigen_hand)
     #cv.waitKey(200)
-    cv.imwrite('Eigenhand ' + str(h) + '.png',eigen_hand)
+    #cv.imwrite('Eigenhand ' + str(h) + '.png',eigen_hand)
 
 #cv.waitKey(0)
 #cv.destroyAllWindows()
+
+# ------------------ STEP 7. WEIGHTS ------------------------------
+
+Omega_clases = np.zeros((7,M2))
+
+# Class one - Palm
+W_G1 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(0,10):
+    for k in range(M2):
+        W_G1[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[0,:] = np.mean(W_G1,0)
+
+# Class two - C
+W_G2 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(10,20):
+    for k in range(M2):
+        W_G2[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[1,:] = np.mean(W_G2,0)
+
+# Class three - Fist
+W_G3 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(20,30):
+    for k in range(M2):
+        W_G3[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[2,:] = np.mean(W_G3,0)
+
+# Class Four - Ok
+W_G4 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(30,40):
+    for k in range(M2):
+        W_G4[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[3,:] = np.mean(W_G4,0)
+
+# Class five - Peace
+W_G5 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(40,50):
+    for k in range(M2):
+        W_G5[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[4,:] = np.mean(W_G5,0)
+
+# Class six - I love you
+W_G6 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(50,60):
+    for k in range(M2):
+        W_G6[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[5,:] = np.mean(W_G6,0)
+
+# Class seven - L
+W_G7 = np.zeros((10,M2), dtype=np.uint8)
+for i in range(60,70):
+    for k in range(M2):
+        W_G7[0,k] = np.dot(U[k,:],(M[i,:] - average))
+Omega_clases[6,:] = np.mean(W_G7,0)
+
+
+# print(Omega_G1)
+# print(Omega_G2)
+# print(Omega_G3)
+# print(Omega_G4)
+# print(Omega_G5)
+# print(Omega_G6)
+# print(Omega_G7)
+
+# --------------------------- STEP 8: Clasification -----------------------------------------
+
+Palm = cv.imread('Trainingset_processed/Gesture1_frame00.png', cv.IMREAD_GRAYSCALE)      # Read the image in gray scale
+New_imag1 = Palm.flatten()
+O_new = np.zeros((1,M2), dtype=np.uint8)
+for k in range(M2):
+    O_new[0,k] = np.dot(U[k,:],(New_imag1 - average))
+print(O_new)
+
+d = np.zeros((1,7))
+for i in range(7):
+    d[0,i] = (np.linalg.norm(O_new-Omega_clases[i,:]))**2
+print(d)
