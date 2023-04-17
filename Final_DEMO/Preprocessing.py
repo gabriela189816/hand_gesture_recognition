@@ -39,15 +39,36 @@ def img_prepro():
         image_color = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
         copy = image_color.copy()  # This copy of the color image is used for the bounding rectangle.
         cv.drawContours(image_color, contours, -1, (255, 0, 0), 2)
-
+        # cv.imshow('CONTOURS OF THE IMAGE', image_color)
+        # cv.waitKey(0)
+        # cv.destroyAllWindows()
+        value = 0
+        num = 0
         for contour in range(len(contours)):
-            # --- BOUNDING RECTANGLE ---
-            x, y, w, h = cv.boundingRect(contours[contour])
-            # --- DRAW THE BOUNDING RECTANGLE ---
-            cv.rectangle(copy, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            if len(contours[contour]) > value:
+                num = contour
+                value = len(contours[contour])
+            else:
+                pass
+        # --- BOUNDING RECTANGLE ---
+        x, y, w, h = cv.boundingRect(contours[num])
+        # --- DRAW THE BOUNDING RECTANGLE ---
+        cv.rectangle(copy, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        print(x, y, w, h)
+        # cv.imshow('BOUNDING BOX', copy)
+        # cv.waitKey(0)
+        # cv.destroyAllWindows()
 
         # --- CROPPING OFF THE IMAGE ---
-        crop = original[y:y + h, x:x + w]
+        boundrie = 10
+        if x <= 10:
+            crop = original[y:y + h, x:x + w]
+        else:
+            crop = original[y - boundrie:y + h + boundrie, x - boundrie:x + w + boundrie]
+        print("The dimensions of the cropped image are: ", np.shape(crop))
+        # cv.imshow('CROPPED IMAGE', crop)
+        # cv.waitKey(0)
+        # cv.destroyAllWindows()
 
         # --- RESIZE OF THE IMAGE ---
         # Resize of the cropped image

@@ -64,11 +64,17 @@ done = False
 while not done:
 
     key = cv.waitKey(1)
+    key = cv.waitKey(1) & 255
 
     if (key&255) == 27:
-        print ("\tESC key detected!")
+        print ("\t key detected!")
+        done = True
+
+    elif chr(key) =='s': #screen capture
+        print(key)
         done = True
     # Infrared method
+
     _, ir4d = get_ir()
     cv.imshow("IR image", ir4d)
     frame_idx+=1
@@ -87,4 +93,4 @@ print ("Terminated!")
 # ------------------- Preprocessing input image -------------------------------------
 #  s = save image
 #  any other = try again!
-#img_prepro()
+img_prepro()
