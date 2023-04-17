@@ -7,6 +7,7 @@ Comments:
 """
 import cv2 as cv
 import numpy as np
+import pandas as pd
 
 # **********************************************************
 # ------------- STEP 1. READ IMAGES PREPROCESSED -----------
@@ -24,6 +25,8 @@ for g in range(gestures):
         IMG[:,:,j] = Img
         assert Img is not None, "file could not be read, check with os.path.exists()"
         j +=1
+
+np.savetxt('Image1',IMG[:,:,0])
 
 # for i in range(60,70):
 #     cv.imshow('Original Image', IMG[:,:,i])
@@ -54,11 +57,23 @@ for i in range(gestures*images):
 #print(np.shape(A))
 
 # --------------------- STEP 5. COVARIANCE MATRIX -------------------
+
 L = np.dot(A,np.transpose(A))
-#print(np.shape(L))
+np.savetxt('Matriz_L',L)
+# df = pd.DataFrame(L)
+# df.to_excel('Matriz_L.xlsx', sheet_name='example')
+
 
 # STEP 6. EIGENVALUE DECOMPOSITION ON MATRIX L = AA'
 e, v = np.linalg.eig(L)
+np.savetxt('eigenvalues',e)
+E = sorted(e, reverse=True)
+print(E)
+np.savetxt('eigenvalues_sorted',E)
+# df2 = pd.DataFrame(e)
+# df3 = pd.DataFrame(v)
+# df2.to_excel('eigenvalues_e.xlsx', sheet_name='e')
+# df3.to_excel('eigenvectors_v.xlsx', sheet_name='v')
 #print(e)
 # print(np.amin(e))
 
