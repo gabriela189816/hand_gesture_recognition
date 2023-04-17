@@ -43,19 +43,19 @@ def classify(classes, test_image, reduction, reduced_data_set, average_hands_fla
     classes_name = ["PALM", "C", "FIST", "OK", "PEACE", "ROCK", "INDEX"]
 
     # LOAD AN IMAGE OF EACH CLASS FOR REPRESENTATION
-    palm_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture0_frame00.png"
+    palm_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture0_frame00.png"
     palm = cv.imread(palm_path, cv.IMREAD_GRAYSCALE)
-    c_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture1_frame00.png"
+    c_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture1_frame00.png"
     c = cv.imread(c_path, cv.IMREAD_GRAYSCALE)
-    fist_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture2_frame05.png"
+    fist_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture2_frame05.png"
     fist = cv.imread(fist_path, cv.IMREAD_GRAYSCALE)
-    ok_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture3_frame01.png"
+    ok_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture3_frame01.png"
     ok = cv.imread(ok_path, cv.IMREAD_GRAYSCALE)
-    peace_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture4_frame00.png"
+    peace_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture4_frame00.png"
     peace = cv.imread(peace_path, cv.IMREAD_GRAYSCALE)
-    rock_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture5_frame01.png"
+    rock_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture5_frame01.png"
     rock = cv.imread(rock_path, cv.IMREAD_GRAYSCALE)
-    index_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Gesture6_frame00.png"
+    index_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture6_frame00.png"
     index = cv.imread(index_path, cv.IMREAD_GRAYSCALE)
     images = [palm, c, fist, ok, peace, rock, index]
 

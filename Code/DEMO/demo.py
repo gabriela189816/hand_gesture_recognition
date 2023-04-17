@@ -12,7 +12,7 @@ from Classification import classify
 # ---------- OUTPUT ----------
 # classes := Array containing all the weights of each class of the gestures. [np.array (1x7)]
 
-path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Processed_frames/"
+path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Trainingset_processed"
 disp_avg = False
 disp_cov = False
 disp_eig = False
@@ -30,4 +30,5 @@ output, reduced_dataset, average_hands_flatten = compute_pca(path, disp_avg, dis
 #test_image_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Test_images/Gesture4_frame04.png"
 #test_image_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Test_images/Gesture5_frame02.png"
 #test_image_path = "/Users/lapg/Documents/2do Cuatrimestre/Vision/Proyecto-Hand-Recognition/Own_dataset_hands/Test_images/Gesture6_frame04.png"
+test_image_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Final_DEMO/Resized_image"
 classify(output, test_image_path, reduction, reduced_dataset, average_hands_flatten)
