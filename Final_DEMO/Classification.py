@@ -1,10 +1,20 @@
-# The purpose of this function is to classify an input image, given the weights of each class obtainged by the PCA
-# ---------- INPUTS ----------
-# classes := A vector containing all the weights of each class [np.array]
-# test_image := An image to be classified. [np.array]
+"""
+Created on Friday Apr 07 00:15:00 2023
 
-# ---------- OUTPUT ----------
-# classes := Array containing all the weights of each class of the gestures. [np.array (1x7)]
+@author: Gabriela Hilario Acuapan & Luis Alberto Pineda Gómez
+File: Clasification.py
+Comments: The purpose of this function is to classify an input image, given the weights of each class obtainged by the PCA
+
+            ---------- INPUTS ----------
+            classes := A vector containing all the weights of each class [np.array]
+            test_image := An image to be classified. [np.array]
+            reduction := Value for reducing the dimension of the data set [int]
+            reduced_data_set
+            average_hands_flatten
+
+            ---------- OUTPUT ----------
+            classes := Array containing all the weights of each class of the gestures. [np.array (1x7)]
+"""
 
 # ---------- LIBRARIES ----------
 import os
@@ -18,7 +28,7 @@ t = time.time()
 
 def classify(classes, test_image, reduction, reduced_data_set, average_hands_flatten):
 
-    # READ THE INPUT IMAGE
+    # ----------------- READ THE INPUT IMAGE
     test_image_path = test_image
     test_image = cv.imread(test_image_path, cv.IMREAD_GRAYSCALE)
     test_image = test_image / 255
@@ -27,7 +37,7 @@ def classify(classes, test_image, reduction, reduced_data_set, average_hands_fla
     N_squared = 40_000
     flatten_test_image = flatten_test_image.reshape((N_squared, 1))
 
-    # COMPUTE THE WEIGHTS OF THE TEST IMAGE
+    # ---------------- COMPUTE THE WEIGHTS OF THE TEST IMAGE
     for k in range(np.shape(reduced_data_set)[0]):
         reduced_data_set_reshape = reduced_data_set[k, :]
         reduced_data_set_reshape = reduced_data_set_reshape.reshape((1, N_squared))
@@ -42,7 +52,7 @@ def classify(classes, test_image, reduction, reduced_data_set, average_hands_fla
     position = 0
     classes_name = ["PALM", "C", "FIST", "OK", "PEACE", "ROCK", "INDEX"]
 
-    # LOAD AN IMAGE OF EACH CLASS FOR REPRESENTATION
+    # ----------------- LOAD AN IMAGE OF EACH CLASS FOR REPRESENTATION
     palm_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture0_frame00.png"
     palm = cv.imread(palm_path, cv.IMREAD_GRAYSCALE)
     c_path = "C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Own_dataset_hands/Gesture1_frame00.png"
@@ -59,6 +69,7 @@ def classify(classes, test_image, reduction, reduced_data_set, average_hands_fla
     index = cv.imread(index_path, cv.IMREAD_GRAYSCALE)
     images = [palm, c, fist, ok, peace, rock, index]
 
+    # --------------------------- COMPUTE OF EUCLIDEAN DISTANCE 
     for cl in range(np.shape(classes)[0]):
         euclidean_distance[0, cl] = np.linalg.norm((test_image_weights[0, :] - classes[cl, :]), ord=2)
         if euclidean_distance[0, cl] < comparison:
@@ -66,9 +77,11 @@ def classify(classes, test_image, reduction, reduced_data_set, average_hands_fla
             position = cl
         else:
             pass
+    # --------------------------- CLASSIFY THE INPUT IMAGE
     print("\n Comparación de distancia euclideana con respecto a cada clase: \n", euclidean_distance)
     print(f"\n \t La distancia Euclideana más corta es: {comparison} y pertenece a la clase {classes_name[position]}")
 
+    # --------------------------- PLOT INPUT IMAGE AND ITS CLASS  
     fig, axis = plt.subplots(ncols=2, nrows=1)
     axis[0].set_title("Input Image")
     axis[0].imshow(test_image, cmap="gray")

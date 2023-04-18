@@ -35,11 +35,9 @@ h = 480
 fps = 30
 
 ## Set the video properties
-#print 'Get b4 video mode', depth_stream.get_video_mode()
 depth_stream.set_video_mode(c_api.OniVideoMode(pixelFormat=c_api.OniPixelFormat.ONI_PIXEL_FORMAT_DEPTH_1_MM, resolutionX=w, resolutionY=h, fps=fps))
-#print 'Get after video mode', depth_stream.get_video_mode()
 
-# ----------------------------------------Start the stream -----------------------------------------------------
+# ------------------------------------------------ Start the stream -----------------------------------------------------
 depth_stream.start()
 ir_stream.start() 
 print ("Started!") 
@@ -73,14 +71,13 @@ while not done:
     elif chr(key) =='s': #screen capture
         print(key)
         done = True
-    # Infrared method
 
+    # Infrared method
     _, ir4d = get_ir()
     cv.imshow("IR image", ir4d)
     frame_idx+=1
-# end while
 
-cv.imwrite('Input_image.png', ir4d)
+cv.imwrite('Input_image.png', ir4d) # save image captured
 print ("\tSaving frame")
 
 ## Release resources and terminate
@@ -88,7 +85,7 @@ cv.destroyAllWindows()
 depth_stream.stop()
 openni2.unload()
 print ("Terminated!") 
-# --------- Finish the stream -------------------------------------------------------
+# ---------------------------------------------- Finish the stream -------------------------------------------------------
 
 # ------------------- Preprocessing input image -------------------------------------
 #  s = save image

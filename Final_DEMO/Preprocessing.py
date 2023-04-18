@@ -13,15 +13,9 @@ Comments: Preprocessing of images.
 """
 
 # --- IMPORT LIBRARIES ---
-#import os
 import numpy
 import numpy as np
 import cv2 as cv
-
-# PATH TO READ THE IMAGES
-# path ="C:/Users/gabri/OneDrive/Documentos/GitHub/Hand_gesture_recognition/Final_DEMO"
-# list_dir = os.listdir(path)
-# print("Total amount of files in the current directory:", len(list_dir))
 
 def img_prepro():
     # LOAD THE INPUT IMAGE
@@ -30,18 +24,17 @@ def img_prepro():
     # WE EVALUATE IF THE IMAGE LOADED IS AN IMAGE TYPE
     if type(image) is numpy.ndarray:
         original = image.copy()
-        # BINARIZE THE IMAGE
+
+        # (1) ----- BINARIZE THE IMAGE -----
         threshold_value, threshold = cv.threshold(image, 128, 255, cv.THRESH_BINARY)
-        # FIND THE CONTOURS OF THE CURRENT IMAGE
+        # (2.1) ----- FIND THE CONTOURS OF THE CURRENT IMAGE
         contours, hierarchy = cv.findContours(threshold, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
 
-        # --- DRAWING THE CONTOURS OF THE IMAGE ---
+        # (2.2) ----- DRAWING THE CONTOURS OF THE IMAGE ----
         image_color = cv.cvtColor(image, cv.COLOR_GRAY2BGR)
         copy = image_color.copy()  # This copy of the color image is used for the bounding rectangle.
         cv.drawContours(image_color, contours, -1, (255, 0, 0), 2)
-        # cv.imshow('CONTOURS OF THE IMAGE', image_color)
-        # cv.waitKey(0)
-        # cv.destroyAllWindows()
+
         value = 0
         num = 0
         for contour in range(len(contours)):
@@ -50,32 +43,26 @@ def img_prepro():
                 value = len(contours[contour])
             else:
                 pass
-        # --- BOUNDING RECTANGLE ---
+        # (2.3) ----- BOUNDING RECTANGLE ----
         x, y, w, h = cv.boundingRect(contours[num])
-        # --- DRAW THE BOUNDING RECTANGLE ---
+
+        # (2.4) ----- DRAW THE BOUNDING RECTANGLE ---
         cv.rectangle(copy, (x, y), (x + w, y + h), (0, 0, 255), 2)
         print(x, y, w, h)
-        # cv.imshow('BOUNDING BOX', copy)
-        # cv.waitKey(0)
-        # cv.destroyAllWindows()
 
-        # --- CROPPING OFF THE IMAGE ---
+        # (3) ----- CROPPING OFF THE IMAGE -----
         boundrie = 10
         if x <= 10:
             crop = original[y:y + h, x:x + w]
         else:
             crop = original[y - boundrie:y + h + boundrie, x - boundrie:x + w + boundrie]
         print("The dimensions of the cropped image are: ", np.shape(crop))
-        # cv.imshow('CROPPED IMAGE', crop)
-        # cv.waitKey(0)
-        # cv.destroyAllWindows()
 
-        # --- RESIZE OF THE IMAGE ---
-        # Resize of the cropped image
+        # (4) ----- RESIZE OF THE IMAGE -----
         height = 200
         width = 200
         dim = (height, width)
-        frame = cv.resize(crop, dim, interpolation=cv.INTER_AREA)
+        frame = cv.resize(crop, dim, interpolation=cv.INTER_AREA) # Resize of the cropped image
         print("The dimensions of the new resized image are:,", np.shape(frame))
         
         cv.imshow('RESIZED IMAGE', frame)

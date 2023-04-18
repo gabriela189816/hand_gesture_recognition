@@ -1,14 +1,21 @@
-# The purpose of this function is to compute the PCA of a given data set.
-# ---------- INPUTS ----------
-# path: := Path from where to read all the images already pre-processed. [String]
-# disp_avg := Display the average hand of the data set [Boolean]
-# disp_cov := Display the covariance matrix of the data set [Boolean]
-# disp_eig := Display the 6 most representative eigen-hands of the data set [Boolean]
-# disp_sum := Display the accumulated sum of the eigenvalues of the data set [Boolean]
-# reduction := Value for reducing the dimension of the data set [int]
+"""
+Created on Friday Apr 07 00:15:00 2023
 
-# ---------- OUTPUT ----------
-# classes := Array containing all the weights of each class of the gestures. [np.array (1x7)]
+@author: Gabriela Hilario Acuapan & Luis Alberto Pineda Gómez
+File: PCA.py
+Comments: The purpose of this function is to compute the PCA of a given data set.
+
+            ---------- INPUTS ----------
+            path: := Path from where to read all the images already pre-processed. [String]
+            disp_avg := Display the average hand of the data set [Boolean]
+            disp_cov := Display the covariance matrix of the data set [Boolean]
+            disp_eig := Display the 6 most representative eigen-hands of the data set [Boolean]
+            disp_sum := Display the accumulated sum of the eigenvalues of the data set [Boolean]
+            reduction := Value for reducing the dimension of the data set [int]
+
+            ---------- OUTPUT ----------
+            classes := Array containing all the weights of each class of the gestures. [np.array (1x7)]
+"""
 
 # ---------- LIBRARIES ----------
 import os
@@ -30,8 +37,8 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
     dimensions = (height, width)
     average_hands = np.zeros(dimensions, dtype=np.float64)
 
-    # --- PALM GESTURE ---
-    i0 = 0  # Variable for counting the number of PALM gestures
+    # ---  GESTURES ---
+    i0 = 0  # Variable for counting the number of gestures
     palm_gestures = np.zeros((10, width * height), dtype=np.float64)
 
     # --- C GESTURE ---
@@ -47,15 +54,15 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
     ok_gestures = np.zeros((10, width * height), dtype=np.float64)
 
     # --- PEACE GESTURE ---
-    i4 = 0  # Variable for counting the number of PACE gestures
+    i4 = 0  # Variable for counting the number of PEACE gestures
     peace_gestures = np.zeros((10, width * height), dtype=np.float64)
 
-    # --- ROCK GESTURE ---
-    i5 = 0  # Variable for counting the number of ROCK gestures
+    # --- ILOVEU GESTURE ---
+    i5 = 0  # Variable for counting the number of ILOVEU gestures
     rock_gestures = np.zeros((10, width * height), dtype=np.float64)
 
-    # --- INDEX GESTURE ---
-    i6 = 0  # Variable for counting the number of INDEX gestures
+    # --- L GESTURE ---
+    i6 = 0  # Variable for counting the number of L gestures
     index_gestures = np.zeros((10, width * height), dtype=np.float64)
 
     # Variable for counting the number of images that are being loaded into the system.
@@ -158,13 +165,11 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
 
     # ---------- COMPUTE THE EIGENVALUES & EIGENVECTORS OF THE COVARIANCE MATRIX ----------
     eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
-    #print(np.amax(eigenvalues), np.amin(eigenvalues))
 
     # ---------- SORTING THE PRINCIPAL COMPONENTES ----------
     idx = np.argsort(eigenvalues)
     sorted_eigenvalues = eigenvalues[idx][::-1]
     sorted_eigenvectors = eigenvectors[:, idx]
-    # print(sorted_eigenvalues)
 
     # ---------- DRAWING THE EIGEN-HANDS ----------
     u = np.zeros((index, N_squared), dtype=np.float64)
@@ -176,8 +181,6 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
         for k in range(np.shape(A)[1]):
             result = result + sorted_eigenvectors[l, k] * A_transpose[k, :]
             u[l, :] = result[:, :]
-        #print(f"Obtaining Eigen-hand {l}")
-    #print("All Eigen-hands Calculated")
 
     if disp_eig == True:
         # ---------- PRINT THE 6 MOST REPRESENTATIVE EIGENHANDS ----------
@@ -227,7 +230,6 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
     # BY DOING THE PCA ANALYSIS, WE COME UP WITH THE CONCLUSION THAT 30 EIGEN-GESTURES IS ENOUGH TO REPRESENT ABOUT
     reduced_data_set = np.zeros((reduction, N_squared), dtype=np.float64)
     reduced_data_set = u[0:reduction, :]
-    # print(np.shape(reduced_data_set)[0])
 
     # ---------- AVERAGE HANDS FLATTEN ----------
     average_hands_flatten = average_hands.flatten()
@@ -298,7 +300,7 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
     peace_gesture_weights = peace_gesture_weights / int(np.shape(peace_gestures)[0])
     #print(f"Peace Gesture Max Weight:{np.amax(peace_gesture_weights)}, Min weight:{np.amin(peace_gesture_weights)}")
 
-    # ---------- ROCK GESTURE WEIGHTS----------
+    # ---------- ILOVEU GESTURE WEIGHTS----------
     rock_gesture_weights = np.zeros((1, reduction), dtype=np.float64)
     for l in range(np.shape(rock_gestures)[0]):
         train_image = rock_gestures[l, :]
@@ -309,9 +311,9 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
             weight = np.matmul(reduced_data_set_reshape, (train_image - average_hands_flatten))
             rock_gesture_weights[0, k] = rock_gesture_weights[0, k] + weight.item()
     rock_gesture_weights = rock_gesture_weights / int(np.shape(rock_gestures)[0])
-    #print(f"Rock Gesture Max Weight:{np.amax(rock_gesture_weights)}, Min weight:{np.amin(rock_gesture_weights)}")
+    #print(f"LOVEUGesture Max Weight:{np.amax(rock_gesture_weights)}, Min weight:{np.amin(rock_gesture_weights)}")
 
-    # ---------- INDEX GESTURE WEIGHTS----------
+    # ---------- L GESTURE WEIGHTS----------
     index_gesture_weights = np.zeros((1, reduction), dtype=np.float64)
     for l in range(np.shape(index_gestures)[0]):
         train_image = index_gestures[l, :]
@@ -322,7 +324,7 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
             weight = np.matmul(reduced_data_set_reshape, (train_image - average_hands_flatten))
             index_gesture_weights[0, k] = index_gesture_weights[0, k] + weight.item()
     index_gesture_weights = index_gesture_weights / int(np.shape(index_gestures)[0])
-    #print(f"Index Gesture Max Weight:{np.amax(index_gesture_weights)}, Min weight:{np.amin(index_gesture_weights)}")
+    #print(f"L Gesture Max Weight:{np.amax(index_gesture_weights)}, Min weight:{np.amin(index_gesture_weights)}")
 
     # ---------- CLASSES FOR EACH GESTURE ----------
     classes = np.zeros((7, reduction))
@@ -342,10 +344,10 @@ def compute_pca(path, disp_avg, disp_cov, disp_eig, disp_sum, reduction):
     # PEACE GESTURE CLASS
     classes[4, :] = peace_gesture_weights
 
-    # ROCK GESTURE CLASS
+    # ILOVEU GESTURE CLASS
     classes[5, :] = rock_gesture_weights
 
-    # INDEX GESTURE CLASS
+    # L GESTURE CLASS
     classes[6, :] = index_gesture_weights
 
     elapsed = time.time() - t
