@@ -20,15 +20,16 @@ En general, el método utiliza la **transformación de Karhunen-Loeve**. Cada ca
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 ## RESULTADOS
 **SET DE ENTRENAMIENTO**
-https://github.com/gabriela189816/Hand_gesture_recognition/blob/main/Images/Training_set.png
+<img src="Images/Training_set.png" alt="Set de entranamiento"/>
 
 **PREPROCESAMIENTO DE LAS IMÁGENES**
-
+<img src="Images/Preprocesamiento.png" alt="Preprocesamiento de las imágenes"/>
 
 **MANO PROMEDIO**
-https://github.com/gabriela189816/Hand_gesture_recognition/blob/main/Images/average_hand.png
+<img src="Images/average_hand.png" alt="Mano promedio"/>
 
 **PRIMERAS 10 EIGENHANDS MÁS REPRESENTATIVAS**
+<img src="Images/FinalEigenHands.png" alt="Eigenhands"/>
 
 **DEMOSTRACIÓN DE RECONOCIMIENTO**
-https://github.com/gabriela189816/Hand_gesture_recognition/blob/main/Files/Experiment_demo.png
+<img src="Files/Experiment_demo.png" alt="Ejemplo de funcionamiento"/>
